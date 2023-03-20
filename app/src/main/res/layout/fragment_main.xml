@@ -8,20 +8,6 @@
     tools:context=".ui.main.MainFragment">
 
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/xTop_guideline"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.02" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/xBottom_guideline"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.98" />
-
-    <androidx.constraintlayout.widget.Guideline
         android:id="@+id/yLeft_guideline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -37,13 +23,14 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/colorScroll_recyclerView"
-        android:layout_width="385dp"
-        android:layout_height="679dp"
+        android:layout_width="375dp"
+        android:layout_height="727dp"
         android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="42dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.166" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
