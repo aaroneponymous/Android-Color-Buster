@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -62,6 +63,7 @@ class MainFragment : Fragment() {
     private inner class ColorBusterViewHolder(view: View) : RecyclerView.ViewHolder(view), View.OnClickListener {
 
         private lateinit var color: ColorValues
+        private val colorName: TextView = itemView.findViewById(R.id.colorName_textView)
         private val colorCard: CardView = itemView.findViewById(R.id.colorCard_cardView)
 
         init {
@@ -73,6 +75,7 @@ class MainFragment : Fragment() {
 
         fun bind(color: ColorValues) {
             this.color = color
+            colorName.text = color.name
             colorCard.setCardBackgroundColor(parseColor(color.hexString))
         }
 
