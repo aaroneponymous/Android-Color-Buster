@@ -1,4 +1,4 @@
-package com.apaul9.colorbuster.ui.detailfrag
+package com.apaul9.colorbuster.ui.otherfrags
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
