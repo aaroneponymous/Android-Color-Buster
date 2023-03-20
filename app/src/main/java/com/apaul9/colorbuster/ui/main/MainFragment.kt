@@ -13,6 +13,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.cardview.widget.CardView
+import androidx.navigation.findNavController
+import androidx.navigation.navGraphViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.apaul9.colorbuster.R
@@ -20,13 +22,13 @@ import com.apaul9.colorbuster.ui.model.ColorValues
 
 class MainFragment : Fragment() {
 
+
+    private val viewModel: MainViewModel by navGraphViewModels(R.id.nav_graph)
     private lateinit var recycler: RecyclerView
-    private lateinit var viewModel: MainViewModel
     private lateinit var prefs: SharedPreferences
 
     companion object {
         const val POSITION = "adapter_position"
-        fun newInstance() = MainFragment()
     }
 
     override fun onCreateView(
@@ -39,25 +41,34 @@ class MainFragment : Fragment() {
 
         recycler = view.findViewById(R.id.colorScroll_recyclerView)
         recycler.layoutManager = LinearLayoutManager(context)
-        recycler.smoothScrollToPosition(prefs.getInt(POSITION, 0))
-        Handler(Looper.getMainLooper()).postDelayed({
-            recycler.findViewHolderForAdapterPosition(
-                prefs.getInt(
-                    POSITION,
-                    0
-                )
-            )?.itemView?.performClick()
-        }, 200L)
+
 
         return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = ViewModelProvider(this)[MainViewModel::class.java]
         viewModel.colors.observe(viewLifecycleOwner) {
             recycler.adapter = ColorAdapter(it)
         }
+
+        recycler.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    // RecyclerView was not scrolled
+                    val viewHolder = recyclerView.findViewHolderForAdapterPosition(prefs.getInt(POSITION, 0))
+                    if (viewHolder != null) {
+                        (viewHolder as ColorBusterViewHolder) /*.setWasScrolled(false)*/
+                    }
+                } else {
+                    // RecyclerView was scrolled
+                    val viewHolder = recyclerView.findViewHolderForAdapterPosition(prefs.getInt(POSITION, 0))
+                    if (viewHolder != null) {
+                        (viewHolder as ColorBusterViewHolder) /*.setWasScrolled(true)*/
+                    }
+                }
+            }
+        })
     }
 
     private inner class ColorBusterViewHolder(view: View) : RecyclerView.ViewHolder(view), View.OnClickListener {
@@ -66,11 +77,24 @@ class MainFragment : Fragment() {
         private val colorName: TextView = itemView.findViewById(R.id.colorName_textView)
         private val colorCard: CardView = itemView.findViewById(R.id.colorCard_cardView)
 
+//        private var wasScrolled = true
+
         init {
             itemView.setOnClickListener(this)
         }
 
         override fun onClick(v: View?) {
+//            if (!wasScrolled) {
+                val bundle = Bundle().apply {
+                    putString("colorName", color.name)
+                    putString("colorHex", color.hexString)
+                }
+                // Navigate to the DetailFragment with the arguments
+                v?.findNavController()?.navigate(R.id.action_mainFragment_to_detailFragment, bundle)
+
+//            } else {
+//                wasScrolled = false
+//            }
         }
 
         fun bind(color: ColorValues) {
@@ -78,6 +102,10 @@ class MainFragment : Fragment() {
             colorName.text = color.name
             colorCard.setCardBackgroundColor(parseColor(color.hexString))
         }
+
+//        fun setWasScrolled(wasScrolled: Boolean) {
+//            this.wasScrolled = wasScrolled
+//        }
 
     }
 

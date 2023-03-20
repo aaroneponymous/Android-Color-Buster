@@ -5,7 +5,7 @@ import com.google.gson.Gson
 
 private const val TAG = "Color Data:"
 
-data class ColorValues(val colorID: Int, val hexString: String, val name: String)
+data class ColorValues(val hexString: String, val name: String)
 
 class ColorList: ArrayList<ColorValues>()
 
