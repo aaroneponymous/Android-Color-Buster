@@ -5,9 +5,9 @@ import com.google.gson.Gson
 
 private const val TAG = "ColorData"
 
-data class Color(val colorID: Int, val hexString: String, val colorName: String)
+data class ColorVal(val colorID: Int, val hexString: String, val colorName: String)
 
-class ColorList: ArrayList<Color>()
+class ColorList: ArrayList<ColorVal>()
 
 class ColorData(jsonString: String) {
 
